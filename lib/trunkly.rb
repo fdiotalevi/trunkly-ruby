@@ -32,7 +32,7 @@ module Trunkly
         end
         links
       else 
-        raise ApiError, "Exception trying to get links"
+        raise ApiError, "Exception trying to get links: "+response.body.to_s
       end
     end
     
@@ -46,7 +46,7 @@ module Trunkly
       when Net::HTTPSuccess
         response
       else
-        raise ApiError, "Exception trying to save a link"
+        raise ApiError, "Exception trying to save a link: "+response.body.to_s
       end
     end
     
