@@ -35,6 +35,13 @@ module Trunkly
       end
     end
     
+    def save(link = Link.new)
+      raise ArgumentError, "save method parameter must be a Trunkly::List" unless link.class == Link
+      yield link if block_given?
+      link
+    end
+    
+    
     def next_page
       puts @last_used_params
       @last_used_params[:page] = @next_page
@@ -71,9 +78,10 @@ module Trunkly
   
   class Link
     
-    attr_accessor :url, :lid, :title, :note, :dt_string, :tags
+    attr_reader :lid, :dt_string, :tags
+    attr_accessor :url, :title, :note
     
-    def initialize(params)
+    def initialize(params = {})
       @url = params['url']
       @lid = params['lid']      
       @title = params['title']      
@@ -81,6 +89,14 @@ module Trunkly
       @dt_string = params['dt_string']           
       @tags = params['tags'] 
       @tags = [@tags] if @tags.class == String
+    end
+    
+    def tags=(some_tags)
+      if some_tags.class == String
+        @tags = some_tags.split(',') 
+      else
+        @tags = some_tags
+      end
     end
     
     def to_s

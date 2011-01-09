@@ -42,4 +42,37 @@ class TestTrunkly < Test::Unit::TestCase
     assert_equal "?one=1&api_key=12345", t.send("query_string", params)
   end
   
+  def test_link_empty_initializer
+    l = Trunkly::Link.new
+    assert_nil l.url
+    assert_nil l.lid
+    assert_nil l.tags  
+    assert_nil l.note      
+    assert_nil l.dt_string
+    assert_nil l.title            
+  end
+
+  def test_link_initializer
+    l = Trunkly::Link.new
+    l.title = 'title'
+    l.url = 'url'
+    l.note = 'note'    
+    assert_equal 'url', l.url
+    assert_equal 'note', l.note      
+    assert_equal 'title', l.title            
+  end
+  
+  def test_link_tags_handling
+    l = Trunkly::Link.new
+
+    l.tags = "one"    
+    assert_equal ['one'], l.tags
+    
+    l.tags = "one,two"    
+    assert_equal ['one','two'], l.tags
+        
+    l.tags = [1,2,3]    
+    assert_equal [1,2,3], l.tags
+  end
+  
 end
