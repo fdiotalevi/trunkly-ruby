@@ -46,7 +46,7 @@ class TestTrunkly < Test::Unit::TestCase
     l = Trunkly::Link.new
     assert_nil l.url
     assert_nil l.lid
-    assert_nil l.tags  
+    assert_equal [], l.tags  
     assert_nil l.note      
     assert_nil l.dt_string
     assert_nil l.title            
@@ -85,8 +85,7 @@ class TestTrunkly < Test::Unit::TestCase
     assert_equal 'title', h['title']
     assert_equal 'url', h['url']
     assert_equal 'note', h['note']        
-    assert_nil h['lid']
-    assert_nil h['tags']    
+    assert_nil h['lid']    
   end
   
   
