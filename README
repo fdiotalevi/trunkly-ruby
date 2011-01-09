@@ -4,10 +4,10 @@ and it's distributed under the terms of the Apache License v.2.0
 
 This project provides a Ruby client to connect to the Trunkly API.
 
-You don't need to be a Trunkly registered user to use API, but without your API KEY you won't be able to post new links.
+You don't need to be a Trunkly registered user to use the API, but without your API KEY you won't be able to post new links.
 
 To register to Trunk.ly go to http://trunk.ly/ and click on Sign Up.
-Once you are signed up go on your profile page and copy the API KEy somewhere; you will use it later.
+Once you are signed up go on your profile page and copy the API KEY somewhere; you will use it later.
 
 
 HOW TO USE THE RUBY CLIENT
@@ -20,9 +20,10 @@ t = Trunkly::Trunkly.new
 links = t.links(:user => 'fdiotalevi')    #this retrieves my 100 latest links
 
 Alternatively, you can use the dynamic method  links_by_<user-name-here>, f.i.
+
 links = t.links_by_fdiotalevi    #this retrieves my 100 latest links
 
-The method 'links' return an array of Trunkly::Link. The meaningful instance variable of Link are
+The method 'links' returns an array of Trunkly::Link. The meaningful instance variables of Link are
 - url 
 - title
 - tags #comma separated list of tags
@@ -36,13 +37,14 @@ You can retrieve your links in two ways:
 a) using the method explained in section 1 and your username
 
 b) using your API Key like in the example
+
 t = Trunkly::Trunkly.new('my_api_key_goes_here')
 links = t.links    #this retrieves my 100 latest links
 
 
 3) Advanced search
 
-Some example of advanced search
+Some examples of advanced search
 
 t = Trunkly::Trunkly.new
 links = t.links(:user => 'fdiotalevi', :tags => 'ruby')  #retrieves links shared with tag ruby   
@@ -52,6 +54,7 @@ links = t.links(:since_time => '2011-01-01 00:00:00') #retrieves links shared af
 You can mix and match all the search parameters in your query
 
 If you use the dynamic method, you can of course omit the user, f.i.
+
 links = t.links_by_fdiotalevi(:tags => 'ruby')  #retrieves links shared with tag ruby   
 
 
@@ -64,10 +67,11 @@ t.links(:count => 10)    #returns the 10 latest links
 t.links(:count => 10, :page => 1)  #returns the 2nd page of results (so results from 11..20)
 
 An even shorter method is, after the first invocation, use the 'next_page' and 'prev_page' method
+
 t = Trunkly::Trunkly.new
 t.links(:count => 10)    #returns the 10 latest links
-t.next_page   			#returns results from 11..20
-t.prev_page				#returns restult 1..10
+t.next_page   		#returns results from 11..20
+t.prev_page			#returns restult 1..10
 
 
 5) Save a link
@@ -84,7 +88,7 @@ end
 
 Note that 'tags' and 'note' are optional parameters.
 
-Alternative way:
+Alternative way (longer and dumber):
 
 t = Trunkly::Trunkly.new('my_api_key_goes_here') #you need an API key to save a link
 it = Trunkly::Link.new
