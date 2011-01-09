@@ -74,5 +74,20 @@ class TestTrunkly < Test::Unit::TestCase
     l.tags = [1,2,3]    
     assert_equal [1,2,3], l.tags
   end
+    
+  
+  def test_link_to_hash
+    l = Trunkly::Link.new
+    l.title = 'title'
+    l.url = 'url'
+    l.note = 'note'
+    h = l.to_hash
+    assert_equal 'title', h['title']
+    assert_equal 'url', h['url']
+    assert_equal 'note', h['note']        
+    assert_nil h['lid']
+    assert_nil h['tags']    
+  end
+  
   
 end
