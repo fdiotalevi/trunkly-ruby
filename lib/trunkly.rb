@@ -1,6 +1,7 @@
+require 'rubygems'
+require 'json'
 require 'net/http'
 require 'uri'
-require 'json'
 
 module Trunkly
   
