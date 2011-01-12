@@ -12,7 +12,13 @@ Once you are signed up go on your profile page and copy the API KEY somewhere; y
 
 HOW TO USE THE RUBY CLIENT
 
-The Ruby client is contained in the lib/trunkly.rb file. Remember to load this file in your ruby script before starting!
+0) Installation
+
+$ gem install trunkly
+
+In your file or irb
+$ require "rubygems"  #ruby 1.8 only
+$ require "trunkly"
 
 1) Retrieve the latest links shared by a user
 
