@@ -31,11 +31,6 @@ class TestTrunkly < Test::Unit::TestCase
     params[:one] = 1
     assert_equal "?one=1", t.send("query_string", params)
     
-    params = {}
-    params[:one] = 1
-    params[:two] = 2
-    assert_equal "?one=1&two=2", t.send("query_string", params)
-    
     t.api_key = '12345'
     params = {}
     params[:one] = 1

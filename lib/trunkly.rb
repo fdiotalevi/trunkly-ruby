@@ -86,7 +86,8 @@ module Trunkly
         query_string += "&#{k.to_s}=#{v}" unless k == :user
       end
       query_string += "&api_key=#{@api_key}" if @api_key #adds api key if available
-      query_string[0] = '?' if query_string[0] == '&'
+      p query_string[0]
+      query_string[0] = '?' if query_string[0] == 38  #replace initial &
       query_string
     end
           
