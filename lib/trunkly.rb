@@ -11,30 +11,25 @@ module Trunkly
     
     LINKS = "http://trunk.ly/api/v1/links/"
     LINK = "http://trunk.ly/api/v1/link/"    
+    TIMELINE = "http://trunk.ly/api/v1/timeline/"
     
     def initialize(key = nil)
       @api_key = key 
       @last_used_params = {}
+      @last_command = :links
       @next_page, @prev_page = 0, 0
     end
     
+    def timeline(params = {})
+      @last_used_params = params       
+      @last_command = :timeline      
+      retrieve_links_from(get_timeline(params))
+    end
+    
     def links(params = {})
-      @last_used_params = params 
-      response = Net::HTTP.get_response(get_links(params))
-      case response
-      when Net::HTTPUnauthorized then
-        raise AuthorizationError, "Unauthorized: no or wrong api_key"      
-      when Net::HTTPSuccess
-        links = []
-        result = JSON.parse(response.body)
-        @prev_page, @next_page = result['prev_page'] || 0, result['next_page'] || 0
-        result['links'].each do |it| 
-          links << Link.new(it) 
-        end
-        links
-      else 
-        raise ApiError, "Exception trying to get links: "+response.body.to_s
-      end
+      @last_used_params = params      
+      @last_command = :links
+      retrieve_links_from get_links(params) 
     end
     
     def save(link = Link.new)
@@ -53,12 +48,12 @@ module Trunkly
     
     def next_page
       @last_used_params[:page] = @next_page
-      links @last_used_params
+      send @last_command.to_sym, @last_used_params
     end
     
     def prev_page
       @last_used_params[:page] = @prev_page
-      links @last_used_params      
+      send @last_command.to_sym, @last_used_params
     end
     alias :previous_page :prev_page
     
@@ -75,10 +70,38 @@ module Trunkly
         
     private
     
+    def retrieve_links_from(url)
+      response = Net::HTTP.get_response(url)
+      case response
+      when Net::HTTPUnauthorized then
+        raise AuthorizationError, "Unauthorized: no or wrong api_key"      
+      when Net::HTTPSuccess
+        extract_links_from response
+      else 
+        raise ApiError, "Exception trying to get links: "+response.body.to_s
+      end
+    end  
+    
+    def extract_links_from(response)
+      links = []
+      result = JSON.parse(response.body)
+      @prev_page, @next_page = result['prev_page'] || 0, result['next_page'] || 0
+      result['links'].each do |it| 
+        links << Link.new(it) 
+      end
+      links      
+    end
+    
+    
+    def get_timeline(params = {})
+      URI.parse(URI.escape(TIMELINE) + query_string(params))
+    end
+    
+    
     def get_links(params = {})
       userpart = params[:user] ? "#{params[:user]}/" : "";
       URI.parse(URI.escape(LINKS + userpart + query_string(params)))
-    end
+    end    
           
     def query_string(params = {})
       query_string = ""
@@ -86,7 +109,6 @@ module Trunkly
         query_string += "&#{k.to_s}=#{v}" unless k == :user
       end
       query_string += "&api_key=#{@api_key}" if @api_key #adds api key if available
-      p query_string[0]
       query_string[0] = '?' if query_string[0] == 38  #replace initial &
       query_string
     end
