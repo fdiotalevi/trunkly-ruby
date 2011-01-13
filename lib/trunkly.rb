@@ -83,13 +83,11 @@ module Trunkly
     end  
     
     def extract_links_from(response)
-      links = []
       result = JSON.parse(response.body)
       @prev_page, @next_page = result['prev_page'] || 0, result['next_page'] || 0
-      result['links'].each do |it| 
-        links << Link.new(it) 
+      result['links'].map do |it| 
+        Link.new(it) 
       end
-      links      
     end
     
     
