@@ -80,7 +80,17 @@ t.next_page   		#returns results from 11..20
 t.prev_page			#returns restult 1..10
 
 
-5) Save a link
+5) Timeline
+
+To get the list of your friends link (called Timeline)
+
+t = Trunkly::Trunkly.new('my_api_key_goes_here')
+links = t.timeline    #this retrieves 100 links
+
+You can apply the usual filters and pagination parameters
+
+
+6) Save a link
 
 Saving a link is very simple
 
